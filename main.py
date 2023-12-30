@@ -4,10 +4,8 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, TimeoutException
+from selenium.webdriver.common.keys import Keys
 from ChromeDriver import WebDriver  # Assuming the WebDriver class is defined in ChromeDriver module
-import pandas as pd
-
 
 class JobScraper:
     def __init__(self):
@@ -17,20 +15,26 @@ class JobScraper:
         self.driver = WebDriver.start_driver(self)
         return self.driver
 
-    # def login(self):
-    #     self.driver.find_element(By.ID, 'gtm--CTALogin').click()
-    #     self.driver.find_element(By.ID, 'checkDeletedCandidateLogin').send_keys('khadijahammoumi14@gmail.com')
-    #     self.driver.find_element(By.ID, 'validatePasswordField').send_keys('0045&Lwalida9999')
-    #
-    #     WebDriverWait(self.driver, 10).until(
-    #         EC.element_to_be_clickable((By.XPATH, '//input[@type="submit" and @value=" Sign in " and @class="button button--primary register-btn ctrl-form-validate-popup-auth"]'))
-    #     ).click()
-
-    def open_the_job(self, num_pages=200):
+    def search(self):
+        search_keyword = input('INPUT YOUR JOB TITLE: ')
         self.start_driver()
+        self.driver.get('https://www.jobillico.com/en')
+        try:
+            search_input = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.ID, 'search-engine-keyword-job'))
+            )
+            search_input.clear()
+            search_input.send_keys(search_keyword)
+            search_input.send_keys(Keys.ENTER)
+        except Exception as e:
+            print(f"Error during search: {e}")
 
+    def open_the_job(self):
+
+        self.search()
+        num_pages = 200
         for page in range(26, num_pages + 1):
-            url = f'https://www.jobillico.com/search-jobs?skwd=%C3%A9ducatrice%20de%20petite%20enfance&icty=0&ipc=0&flat=0&flng=0&mfil=40&imc1=0&imc2=0&imc3=0&imc4=0&isj=0&sort=pert&type=0&ichan=1&ipg={page}'
+            url = f'{self.driver.current_url}&ipg={page}'
             self.driver.get(url)
             job_urls = [job_url_element.get_attribute('href') for job_url_element in
                         self.driver.find_elements(By.CSS_SELECTOR, 'article[ref^="job"] h2 a')]
@@ -40,12 +44,15 @@ class JobScraper:
                 try:
                     if 'https://www.jobillico.com/' not in self.driver.current_url:
                         self.driver.back()
-                except:
+                except Exception as e:
+                    print(f"Error during navigation: {e}")
                     continue
                 try:
-                    apply_button = self.driver.find_element(By.XPATH, '//a[@class="green-btn button button--primary gtm--CTAApplyButton full-width center js-generateExternPostuABTestingKey"]')
+                    apply_button = self.driver.find_element(By.XPATH,
+                                                            '//a[@class="green-btn button button--primary gtm--CTAApplyButton full-width center js-generateExternPostuABTestingKey"]')
                     apply_button.click()
-                except:
+                except Exception as e:
+                    print(f"Error clicking apply button: {e}")
                     continue
 
                 self.input_things()
@@ -55,7 +62,7 @@ class JobScraper:
 
     def input_things(self):
         current_directory = os.getcwd()
-        file_name = 'Khadija_Hammoumi.pdf'
+        file_name = input('YOUR RESUME (in the same folder): ')
         file_path = os.path.join(current_directory, file_name)
         try:
             cv_input = WebDriverWait(self.driver, 10).until(
@@ -65,9 +72,9 @@ class JobScraper:
                 cv_input.send_keys(file_path)
 
             self.driver.implicitly_wait(5)
-            self.driver.find_element(By.ID, 'nameInputExternPostu').send_keys('Khadija Hammoumi')
+            self.driver.find_element(By.ID, 'nameInputExternPostu').send_keys('islam badran')
             self.driver.implicitly_wait(5)
-            self.driver.find_element(By.ID, 'emailInputExternPostu').send_keys('khadijahammoumi14@gmail.com')
+            self.driver.find_element(By.ID, 'emailInputExternPostu').send_keys('islambadran39@gmail.com')
 
             submit_button = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="submitFormExternPostu"]'))
@@ -79,8 +86,7 @@ class JobScraper:
             self.driver.switch_to.window(self.driver.window_handles[0])
 
         except Exception as e:
-            pass
-
+            print(f"Error during input: {e}")
 
 if __name__ == "__main__":
     job_scraper = JobScraper()
