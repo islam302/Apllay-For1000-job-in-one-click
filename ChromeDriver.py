@@ -53,15 +53,15 @@ class WebDriver:
             #"profile.managed_default_content_settings.images": 2,
             "profile.default_content_setting_values.geolocation": 2,
             "profile.default_content_setting_values.notifications": 2,
-            "profile": {"exit_type": "Normal"}, 
+            "profile": {"exit_type": "Normal"},
             "translate" : {"enabled": False},
             "credentials_enable_service": False,
             "profile.password_manager_enabled": False,
             "intl.accept_languages": "en, en_US"
         })
 
-        # chrome_options.headless = True
-        # chrome_options.add_argument("--disable-gpu")
+        chrome_options.headless = True
+        chrome_options.add_argument("--disable-gpu")
 
 
         try:

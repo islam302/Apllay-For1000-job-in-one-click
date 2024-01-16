@@ -88,6 +88,7 @@ class JobScraper:
         except Exception as e:
             print(f"Error during input: {e}")
 
+
 if __name__ == "__main__":
     job_scraper = JobScraper()
     job_scraper.open_the_job()
