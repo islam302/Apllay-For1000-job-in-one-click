@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from ChromeDriver import WebDriver  # Assuming the WebDriver class is defined in ChromeDriver module
+from ChromeDriver import WebDriver
 
 class JobScraper:
     def __init__(self):
