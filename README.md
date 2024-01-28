@@ -1,4 +1,7 @@
-# Apply-for-1000-job
-you can use it to apply on 1000 job in jobillico by one click .
-=======
+# Apply-For1000-job-in-one-click
+
+![Typing SVG](https://readme-typing-svg.demolab.com/?lines=BreadcrumbsApply-For1000-job-in-one-click)
+
+python-Selenium script in OOP 
+
 
