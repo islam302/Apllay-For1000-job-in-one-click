@@ -2,6 +2,5 @@
 
 ![Typing SVG](https://readme-typing-svg.demolab.com/?lines=BreadcrumbsApply-For1000-job-in-one-click)
 
-python-Selenium script in OOP 
 
 
